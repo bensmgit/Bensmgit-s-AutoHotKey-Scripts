@@ -9,6 +9,25 @@ Send ^f
 Return
 
 $Capslock::
+
+; ---------- CHECK TO SEE WHETHER A BROWSER IS ACTIVE ----------
+; ---------- If a non-browser window is active, then we will toggle the capslock status (we will process the caplsock key press event normally).
+; ---------- If a browser window is active, we will continue this script, and have the capslock key press event processed to "Click" the text the Ctrl+F feature of the browser has highlighted.
+
+If WinActive("Chrome") or WinActive("Firefox") or WinActive("ahk_class IEFrame") or WinActive("ahk_class ApplicationFrameWindow")
+{
+  ; A browser is active; continue script.
+}
+Else
+{
+  SetCapsLockState, % GetKeyState("Capslock","t") ? "Off" : "On" ; toggle capslock -- by None
+  Exit
+}
+
+; ---------- CLICK BROWSER-HIGHLIGHTED TEXT ----------
+; ---------- The Ctrl+F feature of the browser shows any matches on the page by hightlighting them. Each browser highlights matches a different color. The script will click the first instance of the highlighted match.
+; ---------- It will search for the first pixel (from the top-left of the window) that matches the color we have indicated (in the script)--and then send a Click event to that specific location on the screen (offset by one pixel down and to the right, as for some reason that pixel is more responsive, more stable).
+
 IfWinActive, Google Chrome
 {
   Px = 0
@@ -59,9 +78,5 @@ If WinActive("ahk_class IEFrame") or WinActive("ahk_class ApplicationFrameWindow
     Click %Px%,%Py%
   }
 }
-
-Else
-  SetCapsLockState, % GetKeyState("Capslock","t") ? "Off" : "On" ; toggle capslock -- by None
-Return
 
 Return
