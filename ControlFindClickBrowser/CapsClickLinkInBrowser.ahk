@@ -27,6 +27,7 @@ Else
 ; ---------- CLICK BROWSER-HIGHLIGHTED TEXT ----------
 ; ---------- The Ctrl+F feature of the browser shows any matches on the page by hightlighting them. Each browser highlights matches a different color. The script will click the first instance of the highlighted match.
 ; ---------- It will search for the first pixel (from the top-left of the window) that matches the color we have indicated (in the script)--and then send a Click event to that specific location on the screen (offset by one pixel down and to the right, as for some reason that pixel is more responsive, more stable).
+; ---------- Note that after we send the click to the located pixel, we send Ctrl+F to the page again, so that the user can type text; hit capslock to click the highlighted match; and then (after 1000 millisecond delay, to allow for page loading) begin simply to type again, and restart the process, without having to press Ctrl+F multiple times.
 
 IfWinActive, Google Chrome
 {
@@ -42,6 +43,8 @@ IfWinActive, Google Chrome
     Px += 1
     Py += 1
     Click %Px%,%Py%
+    Sleep, 1000
+    Send ^f
   }
 }
 
@@ -59,6 +62,8 @@ IfWinActive, Firefox
     Px += 1
     Py += 1
     Click %Px%,%Py%
+    Sleep, 1000
+    Send ^f
   }
 }
 
@@ -76,6 +81,8 @@ If WinActive("ahk_class IEFrame") or WinActive("ahk_class ApplicationFrameWindow
     Px += 1
     Py += 1
     Click %Px%,%Py%
+    Sleep, 1000
+    Send ^f
   }
 }
 
