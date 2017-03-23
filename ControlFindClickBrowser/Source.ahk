@@ -3,11 +3,38 @@
 SetTitleMatchMode, 2
 SendMode Input
 
+; ---------- THE CLICK SENDER FUNCTION ----------
+; ---------- The below is shared across all the browsers.
+ClickHighlight(Color)
+{
+  Px = 0
+  Py = 0
+  Global x1
+  Global y1
+  Global w
+  Global h
+  PixelSearch, Px, Py, x1, y1, w, h, Color, 0, Fast
+  If ErrorLevel
+  {
+    SetCapsLockState, % GetKeyState("Capslock","t") ? "Off" : "On" ; toggle capslock -- by None
+  }
+  Else
+  {
+    Px += 1
+    Py += 1
+    Click %Px%,%Py%
+    Sleep, 1000
+    Send ^f
+  }
+}
+
+; ---------- CTRL+F HOTKEY ----------
 $^f::
 WinGetPos, x1, y1, w, h, A
 Send ^f
 Return
 
+; ---------- CAPLSOCK HOTKEY ----------
 $Capslock::
 
 ; ---------- CHECK TO SEE WHETHER A BROWSER IS ACTIVE ----------
@@ -31,59 +58,17 @@ Else
 
 IfWinActive, Google Chrome
 {
-  Px = 0
-  Py = 0
-  PixelSearch, Px, Py, x1, y1, w, h, 0x3296FF, 0, Fast
-  If ErrorLevel
-  {
-    SetCapsLockState, % GetKeyState("Capslock","t") ? "Off" : "On" ; toggle capslock -- by None
-  }
-  Else
-  {
-    Px += 1
-    Py += 1
-    Click %Px%,%Py%
-    Sleep, 1000
-    Send ^f
-  }
+  ClickHighlight(0x3296FF)
 }
 
 IfWinActive, Firefox
 {
-  Px = 0
-  Py = 0
-  PixelSearch, Px, Py, x1, y1, w, h, 0x78D838, 0, Fast
-  If ErrorLevel
-  {
-    SetCapsLockState, % GetKeyState("Capslock","t") ? "Off" : "On" ; toggle capslock -- by None
-  }
-  Else
-  {
-    Px += 1
-    Py += 1
-    Click %Px%,%Py%
-    Sleep, 1000
-    Send ^f
-  }
+  ClickHighlight(0x78D838)
 }
 
 If WinActive("ahk_class IEFrame") or WinActive("ahk_class ApplicationFrameWindow")
 {
-  Px = 0
-  Py = 0
-  PixelSearch, Px, Py, x1, y1, w, h, 0xFF9933, 0, Fast
-  If ErrorLevel
-  {
-    SetCapsLockState, % GetKeyState("Capslock","t") ? "Off" : "On" ; toggle capslock -- by None
-  }
-  Else
-  {
-    Px += 1
-    Py += 1
-    Click %Px%,%Py%
-    Sleep, 1000
-    Send ^f
-  }
+  ClickHighlight(0xFF9933)
 }
 
 Return
