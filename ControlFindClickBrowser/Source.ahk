@@ -7,12 +7,7 @@ SendMode Input
 ; ---------- The below is shared across all the browsers.
 ClickHighlight(Color)
 {
-  Px = 0
-  Py = 0
-  Global x1
-  Global y1
-  Global w
-  Global h
+  Global x1, y1, w, h
   PixelSearch, Px, Py, x1, y1, w, h, Color, 0, Fast
   If ErrorLevel
   {
